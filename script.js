@@ -5,16 +5,7 @@ var winTrack = new Audio('./sounds/win.wav');
 var correctTrack = new Audio('./sounds/correct.wav');
 var wrongTrack = new Audio('./sounds/wrong.wav');
 
-
-
-
-
 var game = {
-
-    alphabet: {
-        string: "abcdefghijklmnopqrstuvwxyz",
-        array: function(){ return this.string.split("")}
-    },
     phrase: "",
     phraseArray: [],
     score: 0,
@@ -22,6 +13,10 @@ var game = {
     matches: [],
     badGuesses: [],
     lives: 0,
+    alphabet: {
+        string: "abcdefghijklmnopqrstuvwxyz",
+        array: function(){ return this.string.split("")}
+    },
     scene: {
         image: function(){return document.querySelector(".scene-image")},
         text: function(){return document.querySelector(".scene-text")},
@@ -48,7 +43,6 @@ var game = {
         wrong: wrongTrack,
         loop: loopTrack,
     },
-
     stages: [
         {
             phrase: "malfunction",
@@ -172,7 +166,6 @@ var game = {
         })
     },
     guess: function(letter){
-        // console.log(letter);
         if (letter.key){
             letter = letter.key.toLowerCase();
         }
@@ -194,11 +187,21 @@ var game = {
                 }
             }else{
                 game.badGuesses.push(letter);
-                console.log(game.badGuesses);
                 game.wrong(letter);
             }
-            console.log(game.matches);
         }
+    },
+    phraseState: function(state){
+        var phraseLetters = document.querySelectorAll(".letter-box");
+        phraseLetters.forEach(function(letter){
+
+            if (state === "win"){
+                letter.classList.add("matched");
+            }else if (state === "lose"){
+                letter.classList.add("wrong");
+            }
+        })
+            
     },
 
     endScene: function(win){
@@ -212,6 +215,8 @@ var game = {
             game.sounds.win.currentTime = 0;
             game.sounds.win.play();
             game.score++
+            game.phraseState("win");
+            
             
 
         }else{
@@ -222,6 +227,7 @@ var game = {
             game.sounds.loop.currentTime = 0;
             game.sounds.fail.currentTime = 0;
             game.sounds.fail.play();
+            game.phraseState("lose");
             
         }
         if ((game.stages.length - 1) === game.round){
@@ -230,11 +236,16 @@ var game = {
             game.score = 0;           
         }else{
             game.intro.button().textContent = "Next Round";
-        }    
-        game.intro.box().classList.remove("move-away");
-        game.intro.button().disabled = false;
-        game.intro.button().focus();
-        game.round++;   
+        }
+
+        setTimeout(function(){
+            game.intro.box().classList.remove("move-away");
+            game.intro.button().disabled = false;
+            game.intro.button().focus();
+            game.round++;
+
+        }, 1000)
+           
     }
     
     
