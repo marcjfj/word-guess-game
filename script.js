@@ -1,22 +1,17 @@
-var introHead = document.querySelector(".headline");
-var introText = document.querySelector(".intro-text");
-var introImage = document.querySelector(".intro-image");
 var phraseBox = document.querySelector(".phrase");
 var alphabetBox = document.querySelector(".letters");
 var sceneText = document.querySelector(".scene-text");
 var sceneImage = document.querySelector(".scene-image");
-var startButton = document.querySelector(".start");
-var intro = document.querySelector(".intro");
 var roundCount = document.querySelector(".round");
+var scoreCount = document.querySelector(".score");
 var guessCount = document.querySelector(".guesses");
-var round = 0;
 var phrase, phraseArray, guessed, lives;
 var loopTrack = new Audio('./sounds/loop.wav');
 var failTrack = new Audio('./sounds/fail.wav');
 var winTrack = new Audio('./sounds/win.wav');
 var correctTrack = new Audio('./sounds/correct.wav');
 var wrongTrack = new Audio('./sounds/wrong.wav');
-loopTrack.loop = true;
+// loopTrack.loop = true;
 var matches = [];
 var badGuesses = [];
 
@@ -27,6 +22,27 @@ var game = {
     alphabet: {
         string: "abcdefghijklmnopqrstuvwxyz",
         array: function(){ return this.string.split("")}
+    },
+    score: 0,
+    round: 0,
+    intro: {
+        box: function(){return document.querySelector(".intro")},
+        head: function(){return document.querySelector(".headline")},
+        text: function(){return document.querySelector(".intro-text")},
+        image: function(){return document.querySelector(".intro-image")},
+        button: function(){return document.querySelector(".start")}
+    },
+    counters: {
+        round: function(){return document.querySelector(".round")},
+        score: function(){return document.querySelector(".score")},
+        guesses: function(){return document.querySelector(".guesses")},
+    },
+    sounds: {
+        win: loopTrack,
+        fail: failTrack,
+        correct: correctTrack,
+        wrong: wrongTrack,
+        loop: loopTrack,
     },
 
     stages: [
@@ -86,13 +102,15 @@ var game = {
     initialize: function(round){
         game.clear();
         lives = 5;
-        roundCount.textContent = round + 1;
-        guessCount.textContent = lives;
+        game.counters.round().textContent = round + 1;
+        game.counters.round().textContent = lives;
+        game.counters.score().textContent = game.score;
         sceneText.textContent = game.stages[round].hint;
         sceneImage.src = game.stages[round].hintImage;
         phrase = game.stages[round].phrase;
         phraseArray = phrase.split("");
-        loopTrack.play();
+        game.sounds.loop.loop = true;
+        game.sounds.loop.play();
         
         phraseArray.forEach(function(letter){
             var letterBox = document.createElement("div");
@@ -117,8 +135,8 @@ var game = {
 
     },
     wrong: function(letter){
-        wrongTrack.currentTime = 0;
-        wrongTrack.play();
+        game.sounds.wrong.currentTime = 0;
+        game.sounds.wrong.play();
         var alphabetNodes = document.querySelectorAll(".letter-button");
         alphabetNodes.forEach(function(button){
             if (button.value === letter){
@@ -126,15 +144,15 @@ var game = {
             }
         })
         lives--;
-        guessCount.textContent = lives;
+        game.counters.guesses().textContent = lives;
         if (lives === 0){
             game.endScene(false);
             
         }
     },
     match: function(letter){
-        correctTrack.currentTime = 0;
-        correctTrack.play();
+        game.sounds.correct.currentTime = 0;
+        game.sounds.correct.play();
         var phraseNodes = document.querySelectorAll(".letter-box");
         phraseArray.forEach(function(unit, i){
             if (unit === letter){
@@ -182,45 +200,47 @@ var game = {
     endScene: function(win){
         document.removeEventListener("keydown", game.guess);
         if (win){
-            introHead.textContent = "You Did it!"
-            introText.textContent = game.stages[round].winText;
-            introImage.src = game.stages[round].winImage;
-            loopTrack.pause();
-            loopTrack.currentTime = 0;
-            winTrack.currentTime = 0;
-            winTrack.play();
+            game.intro.head().textContent = "You Did it!"
+            game.intro.text().textContent = game.stages[game.round].winText;
+            game.intro.image().src = game.stages[game.round].winImage;
+            game.sounds.loop.pause();
+            game.sounds.loop.currentTime = 0;
+            game.sounds.win.currentTime = 0;
+            game.sounds.win.play();
+            game.score++
             
 
         }else{
-            introHead.textContent = "You Failed..."
-            introText.textContent = game.stages[round].loseText;
-            introImage.src = game.stages[round].loseImage;
-            loopTrack.pause();
-            loopTrack.currentTime = 0;
-            failTrack.currentTime = 0;
-            failTrack.play();
+            game.intro.head().textContent = "You Failed..."
+            game.intro.text().textContent = game.stages[game.round].loseText;
+            game.intro.image().src = game.stages[game.round].loseImage;
+            game.sounds.loop.pause();
+            game.sounds.loop.currentTime = 0;
+            game.sounds.fail.currentTime = 0;
+            game.sounds.fail.play();
             
         }
-        if ((game.stages.length - 1) === round){
-            startButton.textContent = "Start Over";     
-            round = -1;            
+        if ((game.stages.length - 1) === game.round){
+            game.intro.button().textContent = "Start Over";     
+            game.round = -1;
+            game.score = 0;           
         }else{
-            startButton.textContent = "Next Round";
+            game.intro.button().textContent = "Next Round";
         }    
-        intro.classList.remove("move-away");
-        startButton.disabled = false;
-        startButton.focus();
-        round++;   
+        game.intro.box().classList.remove("move-away");
+        game.intro.button().disabled = false;
+        game.intro.button().focus();
+        game.round++;   
     }
     
     
 }
 
 
-startButton.addEventListener("click", function(){
-    intro.classList.add("move-away");
-    startButton.disabled = true;
-    game.initialize(round);
+game.intro.button().addEventListener("click", function(){
+    game.intro.box().classList.add("move-away");
+    game.intro.button().disabled = true;
+    game.initialize(game.round);
 })
 
 
