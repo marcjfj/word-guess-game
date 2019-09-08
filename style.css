@@ -66,10 +66,10 @@ h1, p{
     padding: 10px 15px;
     border-radius: 10px;
     border: none;
-    background: #FFF;
     text-transform: uppercase;
     box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.486);
     transition: all .3s;
+    background: rgb(252, 249, 246);
     
 }
 .letter-button:hover{
