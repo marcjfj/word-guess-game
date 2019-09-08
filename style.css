@@ -101,7 +101,9 @@ h1, p{
     margin: 20px;
 }
 .intro-text{
-    margin: 20px;
+    margin: 20px auto;
+    max-width: 900px;
+    width: calc(100% - 40px);
 }
 .intro.move-away{
     transform: translateX(120%);

@@ -11,11 +11,11 @@ var roundCount = document.querySelector(".round");
 var guessCount = document.querySelector(".guesses");
 var round = 0;
 var phrase, phraseArray, guessed, lives;
-var loopTrack = new Audio('loop.wav');
-var failTrack = new Audio('fail.wav');
-var winTrack = new Audio('win.wav');
-var correctTrack = new Audio('correct.wav');
-var wrongTrack = new Audio('wrong.wav');
+var loopTrack = new Audio('./sounds/loop.wav');
+var failTrack = new Audio('./sounds/fail.wav');
+var winTrack = new Audio('./sounds/win.wav');
+var correctTrack = new Audio('./sounds/correct.wav');
+var wrongTrack = new Audio('./sounds/wrong.wav');
 loopTrack.loop = true;
 var matches = [];
 var badGuesses = [];
@@ -33,47 +33,47 @@ var game = {
         {
             phrase: "malfunction",
             hint: "Bob gets ready for his morning commute",
-            hintImage: "car.svg",
+            hintImage: "./images/car.svg",
             winText: "Bob decides walk to work today",
-            winImage: "walk.svg",
+            winImage: "./images/walk.svg",
             loseText: "Bob's brakes malfunction and he rear-ends a lawyer.",
-            loseImage: "fender.svg"
+            loseImage: "./images/fender.svg"
         },
         {
             phrase: "terminated",
             hint: "Bob arrives to work.",
-            hintImage: "work.svg",
+            hintImage: "./images/work.svg",
             winText: "Bob decides he doesn't really like working, instead he goes fishing",
-            winImage: "fishing.svg",
+            winImage: "./images/fishing.svg",
             loseText: "Bob finds out that his job has been made redundant by machines. He is terminated",
-            loseImage: "fired.svg"
+            loseImage: "./images/fired.svg"
         },
         {
             phrase: "infidelity",
             hint: "Bob decides to surprise his girlfriend with flowers",
-            hintImage: "gf.svg",
+            hintImage: "./images/gf.svg",
             winText: "Bob decides he doesn't really like his girlfriend, instead goes to a strip club",
-            winImage: "club.svg",
+            winImage: "./images/club.svg",
             loseText: "Bob finds his girlfriend in bed with his boss",
-            loseImage: "bed.svg"
+            loseImage: "./images/bed.svg"
         },
         {
             phrase: "bereavement",
             hint: "Bob heads home to spend time with his beloved cat",
-            hintImage: "home.svg",
+            hintImage: "./images/home.svg",
             winText: "Bob decides he doesn't really like his cat, instead goes to the strip club",
-            winImage: "club.svg",
+            winImage: "./images/club.svg",
             loseText: "Bob realizes that he hasn't fed his cat in weeks",
-            loseImage: "cat.svg"
+            loseImage: "./images/cat.svg"
         },
         {
             phrase: "diagnosed",
             hint: "Bob gets a phone call",
-            hintImage: "phone.svg",
+            hintImage: "./images/phone.svg",
             winText: "Bob doesn't answer the phone.",
-            winImage: "club.svg",
+            winImage: "./images/club.svg",
             loseText: "It's his doctor. It turns out that the lump that he found isn't benign after all.",
-            loseImage: "doctor.svg"
+            loseImage: "./images/doctor.svg"
         },
     ],
     clear: function(){
