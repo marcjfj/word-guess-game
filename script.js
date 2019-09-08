@@ -11,7 +11,6 @@ var failTrack = new Audio('./sounds/fail.wav');
 var winTrack = new Audio('./sounds/win.wav');
 var correctTrack = new Audio('./sounds/correct.wav');
 var wrongTrack = new Audio('./sounds/wrong.wav');
-// loopTrack.loop = true;
 var matches = [];
 var badGuesses = [];
 
@@ -38,7 +37,7 @@ var game = {
         guesses: function(){return document.querySelector(".guesses")},
     },
     sounds: {
-        win: loopTrack,
+        win: winTrack,
         fail: failTrack,
         correct: correctTrack,
         wrong: wrongTrack,
