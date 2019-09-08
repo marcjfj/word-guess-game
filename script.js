@@ -1,18 +1,11 @@
-var phraseBox = document.querySelector(".phrase");
-var alphabetBox = document.querySelector(".letters");
-var sceneText = document.querySelector(".scene-text");
-var sceneImage = document.querySelector(".scene-image");
-var roundCount = document.querySelector(".round");
-var scoreCount = document.querySelector(".score");
-var guessCount = document.querySelector(".guesses");
-var phrase, phraseArray, guessed, lives;
+
 var loopTrack = new Audio('./sounds/loop.wav');
 var failTrack = new Audio('./sounds/fail.wav');
 var winTrack = new Audio('./sounds/win.wav');
 var correctTrack = new Audio('./sounds/correct.wav');
 var wrongTrack = new Audio('./sounds/wrong.wav');
-var matches = [];
-var badGuesses = [];
+
+
 
 
 
@@ -22,8 +15,20 @@ var game = {
         string: "abcdefghijklmnopqrstuvwxyz",
         array: function(){ return this.string.split("")}
     },
+    phrase: "",
+    phraseArray: [],
     score: 0,
     round: 0,
+    matches: [],
+    badGuesses: [],
+    lives: 0,
+    scene: {
+        image: function(){return document.querySelector(".scene-image")},
+        text: function(){return document.querySelector(".scene-text")},
+        phraseBox: function(){return document.querySelector(".phrase")},
+        alphabetBox: function(){return document.querySelector(".letters")},
+
+    },
     intro: {
         box: function(){return document.querySelector(".intro")},
         head: function(){return document.querySelector(".headline")},
@@ -92,30 +97,30 @@ var game = {
         },
     ],
     clear: function(){
-        phraseBox.innerHTML = "";
-        alphabetBox.innerHTML = "";
-        matches = [];
-        badGuesses = [];
+        game.scene.phraseBox().innerHTML = "";
+        game.scene.alphabetBox().innerHTML = "";
+        game.matches = [];
+        game.badGuesses = [];
         
     },
     initialize: function(round){
         game.clear();
-        lives = 5;
+        game.lives = 5;
         game.counters.round().textContent = round + 1;
-        game.counters.round().textContent = lives;
+        game.counters.guesses().textContent = game.lives;
         game.counters.score().textContent = game.score;
-        sceneText.textContent = game.stages[round].hint;
-        sceneImage.src = game.stages[round].hintImage;
-        phrase = game.stages[round].phrase;
-        phraseArray = phrase.split("");
+        game.scene.text().textContent = game.stages[round].hint;
+        game.scene.image().src = game.stages[round].hintImage;
+        game.phrase = game.stages[round].phrase;
+        game.phraseArray = game.phrase.split("");
         game.sounds.loop.loop = true;
         game.sounds.loop.play();
         
-        phraseArray.forEach(function(letter){
+        game.phraseArray.forEach(function(letter){
             var letterBox = document.createElement("div");
             letterBox.classList.add("letter-box");
             // letterBox.textContent = letter;
-            phraseBox.appendChild(letterBox);
+            game.scene.phraseBox().appendChild(letterBox);
         });
         
         game.alphabet.array().forEach(function(letter){
@@ -123,7 +128,7 @@ var game = {
             letterButton.classList.add("letter-button");
             letterButton.value = letter;
             letterButton.textContent = letter;
-            alphabetBox.appendChild(letterButton);
+            game.scene.alphabetBox().appendChild(letterButton);
         });
         var letterButtons = document.querySelectorAll(".letter-button");
         letterButtons.forEach(function(button){
@@ -142,9 +147,9 @@ var game = {
                 button.classList.add("wrong");
             }
         })
-        lives--;
-        game.counters.guesses().textContent = lives;
-        if (lives === 0){
+        game.lives--;
+        game.counters.guesses().textContent = game.lives;
+        if (game.lives === 0){
             game.endScene(false);
             
         }
@@ -153,7 +158,7 @@ var game = {
         game.sounds.correct.currentTime = 0;
         game.sounds.correct.play();
         var phraseNodes = document.querySelectorAll(".letter-box");
-        phraseArray.forEach(function(unit, i){
+        game.phraseArray.forEach(function(unit, i){
             if (unit === letter){
                 
                 phraseNodes[i].textContent = letter;
@@ -174,25 +179,25 @@ var game = {
         if (game.alphabet.array().indexOf(letter) === -1){
             return;
         }
-        if (matches.indexOf(letter) < 0 && badGuesses.indexOf(letter) < 0){
+        if (game.matches.indexOf(letter) < 0 && game.badGuesses.indexOf(letter) < 0){
             
-            var match = phraseArray.indexOf(letter);
+            var match = game.phraseArray.indexOf(letter);
             if (match !== -1){
                 while (match !== -1){
                     game.match(letter);
-                    matches.push(letter);
-                    match = phraseArray.indexOf(letter, match + 1);
+                    game.matches.push(letter);
+                    match = game.phraseArray.indexOf(letter, match + 1);
                 }
-                if (matches.length === phraseArray.length){
+                if (game.matches.length === game.phraseArray.length){
                     
                     game.endScene(true);
                 }
             }else{
-                badGuesses.push(letter);
-                console.log(badGuesses);
+                game.badGuesses.push(letter);
+                console.log(game.badGuesses);
                 game.wrong(letter);
             }
-            console.log(matches);
+            console.log(game.matches);
         }
     },
 
