@@ -1,12 +1,5 @@
 
 var game = {
-    phrase: "",
-    phraseArray: [],
-    score: 0,
-    round: 0,
-    matches: [],
-    badGuesses: [],
-    lives: 0,
     alphabet: {
         string: "abcdefghijklmnopqrstuvwxyz",
         array: function(){ return this.string.split("")}
@@ -31,11 +24,6 @@ var game = {
         guesses: function(){return document.querySelector(".guesses")},
     },
     sounds: {
-        win: "",
-        fail: "",
-        correct: "",
-        wrong: "",
-        loop: "",
         init: function(){
             this.loop = new Audio('./sounds/loop.wav');
             this.fail = new Audio('./sounds/fail.wav');
@@ -145,7 +133,7 @@ var game = {
             if (button.value === letter){
                 button.classList.add("wrong");
             }
-        })
+        });
         game.lives--;
         game.counters.guesses().textContent = game.lives;
         if (game.lives === 0){
@@ -168,7 +156,7 @@ var game = {
             if (button.value === letter){
                 button.classList.add("matched");
             }
-        })
+        });
     },
     guess: function(letter){
         if (letter.key){
@@ -205,7 +193,7 @@ var game = {
             }else if (state === "lose"){
                 letter.classList.add("wrong");
             }
-        })
+        });
             
     },
 
@@ -222,8 +210,6 @@ var game = {
             game.score++
             game.phraseState("win");
             
-            
-
         }else{
             game.intro.head().textContent = "You Failed..."
             game.intro.text().textContent = game.stages[game.round].loseText;
@@ -249,20 +235,19 @@ var game = {
             game.intro.button().focus();
             game.round++;
 
-        }, 1000)
+        }, 1000);
            
     },
     setup: function(){
+        game.round = 0;
+        game.score = 0;
         game.sounds.init();
         game.intro.button().addEventListener("click", function(){
             game.intro.box().classList.add("move-away");
             game.intro.button().disabled = true;
             game.initialize(game.round);
-        })
-
-    }
-    
-    
+        });
+    }   
 }
 
 
