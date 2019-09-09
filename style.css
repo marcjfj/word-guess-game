@@ -182,4 +182,7 @@ h1, p{
     .letters{
         margin-bottom: 10px;
     }
+    .intro img{
+        max-height: 25vh;
+    }
 }
