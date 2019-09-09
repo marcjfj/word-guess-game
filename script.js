@@ -1,10 +1,4 @@
 
-var loopTrack = new Audio('./sounds/loop.wav');
-var failTrack = new Audio('./sounds/fail.wav');
-var winTrack = new Audio('./sounds/win.wav');
-var correctTrack = new Audio('./sounds/correct.wav');
-var wrongTrack = new Audio('./sounds/wrong.wav');
-
 var game = {
     phrase: "",
     phraseArray: [],
@@ -37,11 +31,18 @@ var game = {
         guesses: function(){return document.querySelector(".guesses")},
     },
     sounds: {
-        win: winTrack,
-        fail: failTrack,
-        correct: correctTrack,
-        wrong: wrongTrack,
-        loop: loopTrack,
+        win: "",
+        fail: "",
+        correct: "",
+        wrong: "",
+        loop: "",
+        init: function(){
+            this.loop = new Audio('./sounds/loop.wav');
+            this.fail = new Audio('./sounds/fail.wav');
+            this.win = new Audio('./sounds/win.wav');
+            this.correct = new Audio('./sounds/correct.wav');
+            this.wrong = new Audio('./sounds/wrong.wav');
+        }
     },
     stages: [
         {
@@ -98,6 +99,10 @@ var game = {
         
     },
     initialize: function(round){
+        game.sounds.fail.pause();
+        game.sounds.fail.currentTime = 0;
+        game.sounds.win.pause();
+        game.sounds.win.currentTime = 0;
         game.clear();
         game.lives = 5;
         game.counters.round().textContent = round + 1;
@@ -246,17 +251,22 @@ var game = {
 
         }, 1000)
            
+    },
+    setup: function(){
+        game.sounds.init();
+        game.intro.button().addEventListener("click", function(){
+            game.intro.box().classList.add("move-away");
+            game.intro.button().disabled = true;
+            game.initialize(game.round);
+        })
+
     }
     
     
 }
 
 
-game.intro.button().addEventListener("click", function(){
-    game.intro.box().classList.add("move-away");
-    game.intro.button().disabled = true;
-    game.initialize(game.round);
-})
 
+game.setup();
 
 
