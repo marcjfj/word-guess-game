@@ -12,7 +12,8 @@ body{
     background: rgb(248, 234, 217);
     overflow: hidden;
     width: 100vw;
-    position: relative;
+    position: fixed;
+    height: 100vh;
     
 }
 main{
@@ -55,7 +56,7 @@ h1, p{
     display: flex;
     flex-wrap: wrap;
     margin:auto;
-    
+    margin-bottom: 20px;
     justify-content: center;
     max-width: 900px;
     
@@ -153,8 +154,32 @@ h1, p{
     padding: 0px 20px;
 }
 
-/* @media all and (max-width: 500px){
-    .letter-button{
-        padding: 10px 15px;
+@media all and (max-width: 500px){
+    main{
+        
     }
-} */
+    .scene{
+        margin-top: 10px;
+        min-height: 20vh;
+        max-height: 30vh;
+    }
+    .scene-image{
+        max-height: 20vh;
+    }
+    .letters{
+        margin-top: 0px;
+        margin-bottom: auto;
+    }
+    .start{
+        margin-bottom: auto;
+    }
+}
+
+@media all and (max-width: 350px){
+    .letter-button{
+        padding: 5px 10px;
+    }
+    .letters{
+        margin-bottom: 10px;
+    }
+}
